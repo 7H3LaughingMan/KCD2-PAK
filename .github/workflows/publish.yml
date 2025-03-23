@@ -1,0 +1,58 @@
+name: Publish Application
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Get Version
+        id: get_version
+        uses: battila7/get-version-action@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      
+      - name: Build Application
+        run: dotnet publish
+
+      - name: Sign Files
+        uses: azure/trusted-signing-action@v0
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: https://eus.codesigning.azure.net/
+          trusted-signing-account-name: GitHub
+          certificate-profile-name: GitHub
+          files: ${{ github.workspace }}\bin\Publish\KCD2_PAK.exe
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+
+      - name: Get Changelog
+        uses: release-flow/keep-a-changelog-action@v3
+        id: changelog
+        with:
+          command: query
+          version: ${{ steps.get_version.outputs.version-without-v }}
+
+      - name: Update Release With Files
+        id: create_version_release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          name: ${{ steps.get_version.outputs.version-without-v }}
+          body: ${{ steps.changelog.outputs.release-notes }}
+          artifacts: "./bin/Publish/KCD2_PAK.exe"
