@@ -56,10 +56,16 @@ jobs:
           endpoint: https://eus.codesigning.azure.net/
           trusted-signing-account-name: GitHub
           certificate-profile-name: GitHub
-          files: ${{ github.workspace }}\Setup\Release\setup.exe
+          files: ${{ github.workspace }}\Setup\Release\Setup.msi
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
+      
+      - name: Zip Application
+        run: Compress-Archive -Path '.\Application\bin\Publish\KCD2 PAK.exe' application.zip
+
+      - name: Zip Installer
+        run: Compress-Archive -Path '.\Setup\Release\Setup.msi' installer.zip
 
       - name: Get Changelog
         uses: release-flow/keep-a-changelog-action@v3
@@ -75,4 +81,4 @@ jobs:
           allowUpdates: true
           name: ${{ steps.get_version.outputs.version-without-v }}
           body: ${{ steps.changelog.outputs.release-notes }}
-          artifacts: "./Setup/Release/setup.exe"
+          artifacts: "./application.zip, ./installer.zip"

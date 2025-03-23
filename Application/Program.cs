@@ -6,7 +6,7 @@ namespace KCD2_PAK;
 
 public class Program
 {
-    private static readonly NuGet.Versioning.SemanticVersion ApplicationVersion = new(1, 1, 0);
+    private static readonly NuGet.Versioning.SemanticVersion ApplicationVersion = new(1, 2, 0);
 
     public static void Main(string[] args)
     {

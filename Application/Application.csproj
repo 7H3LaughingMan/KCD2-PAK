@@ -11,7 +11,9 @@
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PublishDir>bin\Publish</PublishDir>
     <PublishSingleFile>true</PublishSingleFile>
-    <SelfContained>false</SelfContained>
+    <SelfContained>true</SelfContained>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
   </PropertyGroup>
 
   <ItemGroup>

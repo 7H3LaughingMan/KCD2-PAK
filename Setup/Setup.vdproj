@@ -71,18 +71,13 @@
         "InstallerBootstrapper" = "3:2"
             "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
             {
-            "Enabled" = "11:TRUE"
+            "Enabled" = "11:FALSE"
             "PromptEnabled" = "11:TRUE"
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.CoreRuntime.9.0.x64"
-                    {
-                    "Name" = "8:.NET Runtime 9.0.3 (x64)"
-                    "ProductCode" = "8:Microsoft.NetCore.CoreRuntime.9.0.x64"
-                    }
                 }
             }
         }
@@ -192,15 +187,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:KCD2 PAK"
-        "ProductCode" = "8:{DFA53556-F3F2-4EB5-A64A-7C2AFE7DB2BB}"
-        "PackageCode" = "8:{588B44CD-F163-4649-9276-9D75DB7318F2}"
+        "ProductCode" = "8:{2380E298-8F11-4209-9EA1-AC4939C241A9}"
+        "PackageCode" = "8:{C9951F76-BFAB-491A-838E-93185E6CE1E8}"
         "UpgradeCode" = "8:{33028B0F-0271-40C5-B3FA-0F83C476D72B}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.1.0"
+        "ProductVersion" = "8:1.2.0"
         "Manufacturer" = "8:7H3LaughingMan"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
