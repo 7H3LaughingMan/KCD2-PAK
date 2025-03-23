@@ -76,6 +76,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.CoreRuntime.9.0.x64"
+                    {
+                    "Name" = "8:.NET Runtime 9.0.3 (x64)"
+                    "ProductCode" = "8:Microsoft.NetCore.CoreRuntime.9.0.x64"
+                    }
+                }
             }
         }
     }
@@ -101,7 +109,7 @@
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
                 "IsNETCore" = "11:TRUE"
-                "Architecture" = "2:0"
+                "Architecture" = "2:2"
                 "Runtime" = "2:0"
                 }
             }
@@ -185,7 +193,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:KCD2 PAK"
         "ProductCode" = "8:{DFA53556-F3F2-4EB5-A64A-7C2AFE7DB2BB}"
-        "PackageCode" = "8:{1C847E4E-1540-4CF6-BE28-EEF98C222438}"
+        "PackageCode" = "8:{588B44CD-F163-4649-9276-9D75DB7318F2}"
         "UpgradeCode" = "8:{33028B0F-0271-40C5-B3FA-0F83C476D72B}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -217,68 +225,12 @@
             {
                 "Keys"
                 {
-                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_AC902A744374475BB38A69BF1E563B87"
-                    {
-                    "Name" = "8:Software"
-                    "Condition" = "8:"
-                    "AlwaysCreate" = "11:FALSE"
-                    "DeleteAtUninstall" = "11:FALSE"
-                    "Transitive" = "11:FALSE"
-                        "Keys"
-                        {
-                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_6CE696738FB741F4A8D4D269E8C5022B"
-                            {
-                            "Name" = "8:[Manufacturer]"
-                            "Condition" = "8:"
-                            "AlwaysCreate" = "11:FALSE"
-                            "DeleteAtUninstall" = "11:FALSE"
-                            "Transitive" = "11:FALSE"
-                                "Keys"
-                                {
-                                }
-                                "Values"
-                                {
-                                }
-                            }
-                        }
-                        "Values"
-                        {
-                        }
-                    }
                 }
             }
             "HKCU"
             {
                 "Keys"
                 {
-                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_C3FE5F3B33A94F708FF8A59E070678C6"
-                    {
-                    "Name" = "8:Software"
-                    "Condition" = "8:"
-                    "AlwaysCreate" = "11:FALSE"
-                    "DeleteAtUninstall" = "11:FALSE"
-                    "Transitive" = "11:FALSE"
-                        "Keys"
-                        {
-                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_3C1578CC998040518E995F369F437355"
-                            {
-                            "Name" = "8:[Manufacturer]"
-                            "Condition" = "8:"
-                            "AlwaysCreate" = "11:FALSE"
-                            "DeleteAtUninstall" = "11:FALSE"
-                            "Transitive" = "11:FALSE"
-                                "Keys"
-                                {
-                                }
-                                "Values"
-                                {
-                                }
-                            }
-                        }
-                        "Values"
-                        {
-                        }
-                    }
                 }
             }
             "HKCR"

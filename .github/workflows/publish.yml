@@ -9,7 +9,6 @@ jobs:
     runs-on: windows-latest
     permissions:
       contents: write
-      id-token: write
 
     steps:
       - name: Checkout Repository
@@ -23,8 +22,12 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
+
+      - name: Setup VS Dev Environment
+        uses: seanmiddleditch/gha-setup-vsdevenv@v5
       
       - name: Build Application
+        working-directory: Application
         run: dotnet publish
 
       - name: Sign Files
@@ -36,10 +39,14 @@ jobs:
           endpoint: https://eus.codesigning.azure.net/
           trusted-signing-account-name: GitHub
           certificate-profile-name: GitHub
-          files: ${{ github.workspace }}\bin\Publish\KCD2_PAK.exe
+          files: ${{ github.workspace }}\Application\bin\Publish\KCD2 PAK.exe
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
+      
+      - name: Build Installer
+        working-directory: Setup
+        run: devenv.com Setup.vdproj /build "Release|Any CPU"
 
       - name: Get Changelog
         uses: release-flow/keep-a-changelog-action@v3
@@ -55,4 +62,4 @@ jobs:
           allowUpdates: true
           name: ${{ steps.get_version.outputs.version-without-v }}
           body: ${{ steps.changelog.outputs.release-notes }}
-          artifacts: "./bin/Publish/KCD2_PAK.exe"
+          artifacts: "./Setup/Release/Setup.msi"
