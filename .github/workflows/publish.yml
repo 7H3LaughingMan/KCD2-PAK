@@ -45,7 +45,7 @@ jobs:
           timestamp-digest: SHA256
       
       - name: Build Installer
-        run: devenv.com ${{ github.workspace }}\Setup\Setup.vsproj /build "Release|Any CPU"
+        run: devenv.com ${{ github.workspace }}\Setup\Setup.vdproj /build "Release|Any CPU"
 
       - name: Sign Installer Files
         uses: azure/trusted-signing-action@v0
