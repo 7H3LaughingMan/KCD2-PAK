@@ -30,7 +30,7 @@ jobs:
         working-directory: Application
         run: dotnet publish
 
-      - name: Sign Files
+      - name: Sign Application Files
         uses: azure/trusted-signing-action@v0
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -47,6 +47,20 @@ jobs:
       - name: Build Installer
         working-directory: Setup
         run: devenv.com Setup.vdproj /build "Release|Any CPU"
+
+      - name: Sign Installer Files
+        uses: azure/trusted-signing-action@v0
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: https://eus.codesigning.azure.net/
+          trusted-signing-account-name: GitHub
+          certificate-profile-name: GitHub
+          files: ${{ github.workspace }}\Setup\Release\Setup.msi
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
 
       - name: Get Changelog
         uses: release-flow/keep-a-changelog-action@v3
