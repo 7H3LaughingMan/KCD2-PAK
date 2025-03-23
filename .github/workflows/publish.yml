@@ -56,7 +56,7 @@ jobs:
           endpoint: https://eus.codesigning.azure.net/
           trusted-signing-account-name: GitHub
           certificate-profile-name: GitHub
-          files: ${{ github.workspace }}\Setup\Release\Setup.msi
+          files: ${{ github.workspace }}\Setup\Release\setup.exe
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
@@ -75,4 +75,4 @@ jobs:
           allowUpdates: true
           name: ${{ steps.get_version.outputs.version-without-v }}
           body: ${{ steps.changelog.outputs.release-notes }}
-          artifacts: "./Setup/Release/Setup.msi"
+          artifacts: "./Setup/Release/setup.exe"
