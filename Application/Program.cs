@@ -67,7 +67,7 @@ public class Program
         {
             Console.WriteLine($"KCD2 PAK v{latestVersion} is now available!");
             Console.WriteLine("You can download the latest version using the below links.");
-            Console.WriteLine("https://github.com/7H3LaughingMan/KCD2_PAK/releases/latest");
+            Console.WriteLine("https://github.com/7H3LaughingMan/KCD2-PAK/releases/latest");
             Console.WriteLine("https://www.nexusmods.com/kingdomcomedeliverance2/mods/1482");
             Console.WriteLine();
         }
@@ -76,7 +76,7 @@ public class Program
     public static NuGet.Versioning.SemanticVersion? GetLatestVersion()
     {
         var github = new Octokit.GitHubClient(new Octokit.ProductHeaderValue("KCD2_PAK"));
-        var latestRelease = github.Repository.Release.GetLatest("7H3LaughingMan", "KCD2_PAK").WaitAndUnwrapException();
+        var latestRelease = github.Repository.Release.GetLatest("7H3LaughingMan", "KCD2-PAK").WaitAndUnwrapException();
 
         if (latestRelease is not null)
             return NuGet.Versioning.SemanticVersion.Parse(latestRelease.TagName[1..]);
