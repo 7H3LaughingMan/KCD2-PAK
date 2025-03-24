@@ -2,7 +2,7 @@
   "profiles": {
     "Application": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\\\Steam\\\\steamapps\\\\common\\\\KCD2Mod\\\\mods\\\\miku_hair\""
+      "commandLineArgs": "\"C:\\Steam\\steamapps\\common\\KCD2Mod\\mods\\stash_test_dev\""
     }
   }
 }

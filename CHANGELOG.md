@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- If the folder you are trying to process ends with `_dev` it will output the generated PAK files into a folder with the same name but without the `_dev` suffix.
+
 ## [1.2.0] - 2025-03-23
 
 ### Changed

@@ -6,7 +6,7 @@ namespace KCD2_PAK;
 
 public class Program
 {
-    private static readonly NuGet.Versioning.SemanticVersion ApplicationVersion = new(1, 2, 0);
+    private static readonly NuGet.Versioning.SemanticVersion ApplicationVersion = new(1, 3, 0);
 
     public static void Main(string[] args)
     {
@@ -127,6 +127,12 @@ public class Program
         return fileAttributes.HasFlag(FileAttributes.Directory);
     }
 
+    public static DirectoryInfo GetOutput(DirectoryInfo directory, params string[] path)
+    {
+        var basePath = directory.Name.EndsWith("_dev") ? directory.FullName[..^4] : directory.FullName;
+        return new DirectoryInfo(Path.Combine([basePath, .. path]));
+    }
+
     public static IEnumerable<(FileInfo, RelativePath)> GetFiles(DirectoryInfo directoryInfo, Predicate<RelativePath>? predicate = null)
     {
         foreach (FileInfo fileInfo in directoryInfo.EnumerateFiles("*", SearchOption.AllDirectories))
@@ -149,11 +155,15 @@ public class Program
     public static void PakData(DirectoryInfo directoryInfo, string modId)
     {
         DirectoryInfo dataDirectory = new DirectoryInfo(Path.Combine(directoryInfo.FullName, "Data"));
+        DirectoryInfo outputDirectory = GetOutput(directoryInfo, "Data");
 
         if (!dataDirectory.Exists)
             return;
 
-        var pakPath = Path.Combine(dataDirectory.FullName, $"{modId}.pak");
+        if (!outputDirectory.Exists)
+            outputDirectory.Create();
+
+        var pakPath = Path.Combine(outputDirectory.FullName, $"{modId}.pak");
         var relativePakPath = new RelativePath(Path.GetRelativePath(directoryInfo.FullName, pakPath));
         var relativeDataPath = new RelativePath(Path.GetRelativePath(directoryInfo.FullName, dataDirectory.FullName));
 
@@ -164,10 +174,7 @@ public class Program
         foreach ((FileInfo fileInfo, RelativePath relativePath) in GetFiles(dataDirectory, x => !x.IsWithinFolder(Levels)))
         {
             Console.WriteLine($"Adding {relativeDataPath + relativePath}");
-            ZipArchiveEntry zipArchiveEntry = zipArchive.CreateEntry(relativePath.ToString('/'));
-            using FileStream fileStream = fileInfo.OpenRead();
-            using Stream zipArchiveStream = zipArchiveEntry.Open();
-            fileStream.CopyTo(zipArchiveStream);
+            zipArchive.CreateEntryFromFile(fileInfo.FullName, relativePath.ToString('/'));
         }
 
         Console.WriteLine();
@@ -176,13 +183,17 @@ public class Program
     public static void PakLocalization(DirectoryInfo directoryInfo)
     {
         DirectoryInfo localizationDirectory = new DirectoryInfo(Path.Combine(directoryInfo.FullName, "Localization"));
+        DirectoryInfo outputDirectory = GetOutput(directoryInfo, "Localization");
 
         if (!localizationDirectory.Exists)
             return;
 
+        if (!outputDirectory.Exists)
+            outputDirectory.Create();
+
         foreach (DirectoryInfo localization in localizationDirectory.EnumerateDirectories())
         {
-            var pakPath = Path.Combine(localizationDirectory.FullName, $"{localization.Name}.pak");
+            var pakPath = Path.Combine(outputDirectory.FullName, $"{localization.Name}.pak");
             var relativePakPath = new RelativePath(Path.GetRelativePath(directoryInfo.FullName, pakPath));
             var relativeLocalizationPath = new RelativePath(Path.GetRelativePath(directoryInfo.FullName, localization.FullName));
 
@@ -193,10 +204,7 @@ public class Program
             foreach ((FileInfo fileInfo, RelativePath relativePath) in GetFiles(localization))
             {
                 Console.WriteLine($"Adding {relativeLocalizationPath + relativePath}");
-                ZipArchiveEntry zipArchiveEntry = zipArchive.CreateEntry(relativePath.ToString('/'));
-                using FileStream fileStream = fileInfo.OpenRead();
-                using Stream zipArchiveStream = zipArchiveEntry.Open();
-                fileStream.CopyTo(zipArchiveStream);
+                zipArchive.CreateEntryFromFile(fileInfo.FullName, relativePath.ToString('/'));
             }
 
             Console.WriteLine();
@@ -206,13 +214,17 @@ public class Program
     public static void PakLevels(DirectoryInfo directoryInfo)
     {
         DirectoryInfo levelsDirectory = new DirectoryInfo(Path.Combine(directoryInfo.FullName, "Data", "Levels"));
+        DirectoryInfo outputDirectory = GetOutput(directoryInfo, "Localization");
 
         if (!levelsDirectory.Exists)
             return;
 
+        if (!outputDirectory.Exists)
+            outputDirectory.Create();
+
         foreach (DirectoryInfo level in levelsDirectory.EnumerateDirectories())
         {
-            var pakPath = Path.Combine(levelsDirectory.FullName, $"{level.Name}.pak");
+            var pakPath = Path.Combine(outputDirectory.FullName, $"{level.Name}.pak");
             var relativePakPath = new RelativePath(Path.GetRelativePath(directoryInfo.FullName, pakPath));
             var relativeLevelPath = new RelativePath(Path.GetRelativePath(directoryInfo.FullName, level.FullName));
 
@@ -223,10 +235,7 @@ public class Program
             foreach ((FileInfo fileInfo, RelativePath relativePath) in GetFiles(level))
             {
                 Console.WriteLine($"Adding {relativeLevelPath + relativePath}");
-                ZipArchiveEntry zipArchiveEntry = zipArchive.CreateEntry(relativePath.ToString('/'));
-                using FileStream fileStream = fileInfo.OpenRead();
-                using Stream zipArchiveStream = zipArchiveEntry.Open();
-                fileStream.CopyTo(zipArchiveStream);
+                zipArchive.CreateEntryFromFile(fileInfo.FullName, relativePath.ToString('/'));
             }
 
             Console.WriteLine();
