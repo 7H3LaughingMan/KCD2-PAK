@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.0] - 2025-03-24
+
 ### Added
 
 - If the folder you are trying to process ends with `_dev` it will output the generated PAK files into a folder with the same name but without the `_dev` suffix.
@@ -34,7 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 Initial Release
 
-[Unreleased]: https://github.com/7H3LaughingMan/KCD2-PAK/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/7H3LaughingMan/KCD2-PAK/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/7H3LaughingMan/KCD2-PAK/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/7H3LaughingMan/KCD2-PAK/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/7H3LaughingMan/KCD2-PAK/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/7H3LaughingMan/KCD2-PAK/releases/tag/v1.0.0
