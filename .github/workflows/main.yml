@@ -23,6 +23,9 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
+      
+      - name: .NET Restore
+        run: dotnet restore
 
       - name: Publish Application
         run: dotnet publish
@@ -30,8 +33,8 @@ jobs:
       - name: Create Velopack Release
         run: |
           dotnet tool install -g Velopack
-          vpk download github --repoUrl https://github.com/${{ github.repository }}
-          vpk pack --packId KCD2-PAK --packVersion 2.0.0 --packDir bin\Publish --mainExe KCD2-PAK.exe --icon icon.ico --shortcuts None
+          dotnet vpk download github --repoUrl https://github.com/${{ github.repository }}
+          dotnet vpk pack --packId KCD2-PAK --packVersion 2.0.0 --packDir bin\Publish --mainExe KCD2-PAK.exe --icon icon.ico --shortcuts None
 
       - name: Get Changelog
         uses: release-flow/keep-a-changelog-action@v3
