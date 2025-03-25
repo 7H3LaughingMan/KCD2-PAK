@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        
+
       - name: Get Changelog
         uses: release-flow/keep-a-changelog-action@v3
         id: changelog
@@ -21,4 +21,4 @@ jobs:
           version: latest
 
       - name: Echo Changelog
-        run: echo ${{ steps.get_version.outputs.release-notes }}
+        run: echo "${{ steps.get_version.outputs.release-notes }}"
