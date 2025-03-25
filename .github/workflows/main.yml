@@ -25,7 +25,9 @@ jobs:
           dotnet-version: 9.0.x
       
       - name: .NET Restore
-        run: dotnet restore
+        run: |
+          dotnet restore
+          dotnet tool restore
 
       - name: Publish Application
         run: dotnet publish
