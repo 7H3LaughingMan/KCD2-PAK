@@ -36,7 +36,7 @@ jobs:
         run: |
           dotnet tool install -g Velopack
           dotnet vpk download github --repoUrl https://github.com/${{ github.repository }}
-          dotnet vpk pack --packId KCD2-PAK --packVersion 2.0.0 --packDir bin\Publish --mainExe KCD2-PAK.exe --icon icon.ico --shortcuts None -azureTrustedSignFile metadata.json
+          dotnet vpk pack --packId KCD2-PAK --packVersion 2.0.0 --packDir bin\Publish --mainExe KCD2-PAK.exe --icon icon.ico --shortcuts None --azureTrustedSignFile metadata.json
 
       - name: Get Changelog
         uses: release-flow/keep-a-changelog-action@v3
