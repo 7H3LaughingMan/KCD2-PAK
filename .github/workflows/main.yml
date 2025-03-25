@@ -21,4 +21,10 @@ jobs:
           version: latest
 
       - name: Echo Changelog
-        run: echo "${{ steps.changelog.outputs.release-notes }}"
+        run: echo "${{ steps.changelog.outputs.release-notes }}" > releaseNotes.md
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: releaseNotes.md
+          path: releaseNotes.md
