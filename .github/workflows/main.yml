@@ -10,6 +10,9 @@ jobs:
       contents: write
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
       - name: Get Changelog
         uses: release-flow/keep-a-changelog-action@v3
         id: changelog
