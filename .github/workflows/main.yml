@@ -21,4 +21,4 @@ jobs:
           version: latest
 
       - name: Echo Changelog
-        run: echo "${{ steps.get_version.outputs.release-notes }}"
+        run: echo "${{ steps.changelog.outputs.release-notes }}"
