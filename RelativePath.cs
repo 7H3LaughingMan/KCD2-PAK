@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace KCD2_PAK;
 
@@ -8,7 +8,11 @@ public class RelativePath : ICloneable
 
     public RelativePath(string path) => _path = path.Trim().Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
-    public RelativePath(IList<string> path) => _path = path.ToArray();
+    public RelativePath(IList<string> path) => _path = [.. path];
+
+    public RelativePath(DirectoryInfo relativeTo, DirectoryInfo path) : this(Path.GetRelativePath(relativeTo.FullName, path.FullName)) { }
+
+    public RelativePath(DirectoryInfo relativeTo, FileInfo path) : this(Path.GetRelativePath(relativeTo.FullName, path.FullName)) { }
 
     public bool IsFile => !string.IsNullOrWhiteSpace(FileName);
 

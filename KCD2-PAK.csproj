@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <RootNamespace>KCD2_PAK</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ApplicationIcon>icon.ico</ApplicationIcon>
-    <AssemblyName>KCD2 PAK</AssemblyName>
-    <RootNamespace>KCD2_PAK</RootNamespace>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishAot>true</PublishAot>
     <PublishDir>bin\Publish</PublishDir>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
@@ -17,12 +17,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="icon.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="NuGet.Versioning" Version="6.13.2" />
-    <PackageReference Include="Octokit" Version="14.0.0" />
+    <PackageReference Include="Lnk" Version="1.5.0" />
+    <PackageReference Include="Velopack" Version="0.0.1053" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,21 @@
+name: Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Get Changelog
+        uses: release-flow/keep-a-changelog-action@v3
+        id: changelog
+        with:
+          command: query
+          version: latest
+
+      - name: Echo Changelog
+        run: echo ${{ steps.get_version.outputs.release-notes }}
