@@ -1,4 +1,5 @@
 name: Publish Application
+run-name: ${{ github.ref_name }}
 
 on:
   push:
@@ -55,4 +56,4 @@ jobs:
         run: |
           dotnet vpk download github --repoUrl https://github.com/${{ github.repository }}
           dotnet vpk pack --packId KCD2-PAK --packVersion $env:VERSION --packDir bin\Publish --mainExe KCD2-PAK.exe --icon icon.ico --shortcuts None --azureTrustedSignFile azureTrustedSignFile.json --releaseNotes releaseNotes.md --packAuthors 7H3LaughingMan --packTitle "KCD2 PAK"
-          dotnet vpk upload github --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "KCD2 PAK v$env:VERSION" --tag v$env:VERSION
+          dotnet vpk upload github --repoUrl https://github.com/${{ github.repository }} --token ${{ secrets.GITHUB_TOKEN }} --publish --releaseName "KCD2 PAK v$env:VERSION" --tag v$env:VERSION
