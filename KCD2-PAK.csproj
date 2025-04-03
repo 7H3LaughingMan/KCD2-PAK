@@ -4,7 +4,7 @@
     <Authors>7H3LaughingMan</Authors>
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0-windows</TargetFramework>
-    <RootNamespace>KCD2_PAK</RootNamespace>
+    <RootNamespace>KCD2</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ApplicationIcon>icon.ico</ApplicationIcon>
@@ -19,6 +19,8 @@
 
   <ItemGroup>
     <PackageReference Include="Lnk" Version="1.5.0" />
+    <PackageReference Include="Spectre.Console" Version="0.49.1" />
+    <PackageReference Include="System.IO.Hashing" Version="9.0.3" />
     <PackageReference Include="Velopack" Version="0.0.1053" />
   </ItemGroup>
 

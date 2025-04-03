@@ -1,6 +1,7 @@
 using System.IO.Compression;
+using KCD2;
 
-namespace KCD2_PAK;
+namespace KCD2;
 
 public static class Extensions
 {
@@ -12,12 +13,5 @@ public static class Extensions
     public static FileInfo File(this DirectoryInfo directoryInfo, params string[] paths)
     {
         return new FileInfo(Path.Combine([directoryInfo.FullName, .. paths]));
-    }
-
-    public static ZipArchiveEntry CreateEntryFromFile(this ZipArchive zipArchive, FileInfo source, RelativePath entry) => zipArchive.CreateEntryFromFile(source.FullName, entry.ToString('/'));
-
-    public static uint GetCompressedSize(this FileInfo fileInfo)
-    {
-        return 0;
     }
 }

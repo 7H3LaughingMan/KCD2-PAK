@@ -14,12 +14,9 @@ jobs:
       id-token: write
 
     steps:
-      - name: Get Tags
-        run: |
-          $version = "${{ github.ref_name }}".Substring(1)
-          $assemblyVersion = "${{ github.ref_name }}".Substring(1) + "." + "${{ github.run_number }}"
-          echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          echo "ASSEMBLYVERSION=$assemblyVersion" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Get Assembly Version
+        id: get-assembly-version
+        uses: 7H3LaughingMan/get-assembly-version-action@v1.0.0
 
       - name: Azure CLI Login
         uses: azure/login@v2
@@ -40,20 +37,13 @@ jobs:
           dotnet tool restore
 
       - name: Publish Application
-        run: dotnet publish /p:AssemblyVersion=$env:ASSEMBLYVERSION /p:Version=$env:VERSION
+        run: dotnet publish /p:AssemblyVersion=${{ steps.get-assembly-version.outputs.net-assembly-version }} /p:Version=${{ steps.get-assembly-version.outputs.net-version }}
 
-      - name: Get Changelog
-        uses: release-flow/keep-a-changelog-action@v3
-        id: changelog
-        with:
-          command: query
-          version: ${{ env.VERSION }}
-
-      - name: Save Changelog
-        run: echo "${{ steps.changelog.outputs.release-notes }}" > releaseNotes.md
+      - name: Keep a Changelog - Release Notes
+        uses: 7H3LaughingMan/keep-a-changelog-release-notes@v1.0.0
 
       - name: Create Velopack Release
         run: |
           dotnet vpk download github --repoUrl https://github.com/${{ github.repository }}
-          dotnet vpk pack --packId KCD2-PAK --packVersion $env:VERSION --packDir bin\Publish --mainExe KCD2-PAK.exe --icon icon.ico --shortcuts None --azureTrustedSignFile azureTrustedSignFile.json --releaseNotes releaseNotes.md --packAuthors 7H3LaughingMan --packTitle "KCD2 PAK"
-          dotnet vpk upload github --repoUrl https://github.com/${{ github.repository }} --token ${{ secrets.GITHUB_TOKEN }} --publish --releaseName "KCD2 PAK v$env:VERSION" --tag v$env:VERSION
+          dotnet vpk pack --packId KCD2-PAK --packVersion ${{ steps.get-assembly-version.outputs.net-assembly-version }} --packDir bin\Publish --mainExe KCD2-PAK.exe --icon icon.ico --shortcuts None --azureTrustedSignFile azureTrustedSignFile.json --releaseNotes RELEASE.md --packAuthors 7H3LaughingMan --packTitle "KCD2 PAK"
+          dotnet vpk upload github --repoUrl https://github.com/${{ github.repository }} --token ${{ secrets.GITHUB_TOKEN }} --publish --releaseName "KCD2 PAK v${{ steps.get-assembly-version.outputs.net-assembly-version }}" --tag v${{ steps.get-assembly-version.outputs.net-assembly-version }}

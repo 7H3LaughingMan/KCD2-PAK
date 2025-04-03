@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.1.0] - 2025-04-03
+
+### Added
+
+- Fancy Progress Bars!
+
+### Changed
+
+- Every single pak file is a "task" and are run asynchronously, meaning each one is created at the same time.
+
+### Removed
+
+- Due to the new progress bar you are no longer to save the log to a file.
+
 ## [2.0.0] - 2025-03-26
 
 ### Added
@@ -55,7 +69,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 Initial Release
 
-[Unreleased]: https://github.com/7H3LaughingMan/KCD2-PAK/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/7H3LaughingMan/KCD2-PAK/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/7H3LaughingMan/KCD2-PAK/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/7H3LaughingMan/KCD2-PAK/compare/v1.3.0...v2.0.0
 [1.3.0]: https://github.com/7H3LaughingMan/KCD2-PAK/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/7H3LaughingMan/KCD2-PAK/compare/v1.1.0...v1.2.0

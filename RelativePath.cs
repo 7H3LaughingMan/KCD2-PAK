@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace KCD2_PAK;
+namespace KCD2;
 
 public class RelativePath : ICloneable
 {
@@ -83,5 +83,10 @@ public class RelativePath : ICloneable
 
     public static bool operator !=(RelativePath left, RelativePath right) => !(left == right);
 
-    public static RelativePath operator +(RelativePath left, RelativePath right) => new(left._path.Concat(right._path).ToArray());
+    public static RelativePath operator +(RelativePath left, RelativePath right)
+    {
+        if (left._path.Length == 1 && string.IsNullOrEmpty(left._path[0])) return new(right.ToString());
+        if (right._path.Length == 1 && string.IsNullOrEmpty(right._path[0])) return new(left.ToString());
+        return new(left._path.Concat(right._path).ToArray());
+    }
 }

@@ -1,10 +1,16 @@
-﻿using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using System.IO.Compression;
+using System.IO.Hashing;
+using System.Threading.Tasks;
+using KCD2.Mod;
+using KCD2.PAK;
 using Microsoft.Win32;
+using Spectre.Console;
 using Velopack;
 using Velopack.Locators;
 using Velopack.Sources;
 
-namespace KCD2_PAK;
+namespace KCD2;
 
 class Program
 {
@@ -12,7 +18,7 @@ class Program
 
     private static readonly VelopackLocator velopackLocator = VelopackLocator.GetDefault(null);
 
-    static void Main(string[] args)
+    static async Task Main(string[] args)
     {
         VelopackApp.Build()
             .SetLocator(velopackLocator)
@@ -50,9 +56,9 @@ class Program
         Console.WriteLine();
 
         if (args.Length == 1)
-            ProcessFolder(args[0], true);
+            await ProcessFolder(args[0], true);
         else if (args.Length > 1)
-            ProcessFolders(args);
+            await ProcessFolders(args);
 
         if (!AppDir.File(".nopause").Exists)
         {
@@ -63,9 +69,67 @@ class Program
         Update();
     }
 
+    static async Task PakFolder(ProgressTask progressTask, RelativePath pakRelativePath, FileInfo pakFile, List<(FileInfo, RelativePath)> entryFiles)
+    {
+        var relativePath = pakRelativePath.ParentFolder;
+
+        var pakFolder = pakFile.Directory?.FullName ?? "";
+        var pakFileName = Path.GetFileNameWithoutExtension(pakFile.Name);
+        var pakExtension = pakFile.Extension;
+        var partNumber = 0;
+
+        if (!Directory.Exists(pakFolder))
+            Directory.CreateDirectory(pakFolder);
+
+        progressTask.Description = $"{relativePath}{pakFileName}{pakExtension}";
+        progressTask.MaxValue = entryFiles.Count;
+
+        var pakStream = File.Open(Path.Combine(pakFolder, $"{pakFileName}{pakExtension}"), FileMode.Create);
+        var pakArchive = new PakArchive(pakStream);
+
+        foreach ((var entryFile, var entryPath) in entryFiles)
+        {
+            var entry = new PakArchiveEntry(entryPath);
+            entry.LastWriteTime = entryFile.LastWriteTime;
+
+            using var entryData = new MemoryStream();
+            using var entryStream = entry.Open(entryData);
+            using var entryFileStream = entryFile.Open(FileMode.Open);
+
+            await entryFileStream.CopyToAsync(entryStream);
+
+            await entryFileStream.DisposeAsync();
+            await entryStream.DisposeAsync();
+
+            if (!pakArchive.CheckEntry(entry))
+            {
+                pakArchive.Dispose();
+
+                if (partNumber == 0)
+                {
+                    if (File.Exists(Path.Combine(pakFolder, $"{pakFileName}-part{partNumber}{pakExtension}")))
+                        File.Delete(Path.Combine(pakFolder, $"{pakFileName}-part{partNumber}{pakExtension}"));
+
+                    File.Move(Path.Combine(pakFolder, $"{pakFileName}{pakExtension}"), Path.Combine(pakFolder, $"{pakFileName}-part{partNumber}{pakExtension}"));
+                }
+
+                partNumber++;
+                pakStream = File.Open(Path.Combine(pakFolder, $"{pakFileName}-part{partNumber}{pakExtension}"), FileMode.Create);
+                pakArchive = new PakArchive(pakStream);
+                progressTask.Description = $"{relativePath}{pakFileName}-part{partNumber}{pakExtension}";
+            }
+
+            pakArchive.AddEntry(entry, entryData);
+            progressTask.Increment(1);
+        }
+
+        pakArchive.Dispose();
+        progressTask.StopTask();
+    }
+
     static DirectoryInfo AppDir => new(velopackLocator.RootAppDir ?? AppContext.BaseDirectory);
 
-    static void ProcessFolder(string path, bool recursive = false)
+    static async Task ProcessFolder(string path, bool recursive = false)
     {
         if (TryGetFullPath(path, out var fullPath))
         {
@@ -80,21 +144,48 @@ class Program
 
                     if (modFolder.Valid)
                     {
-                        modFolder.PakData();
-                        modFolder.PakLevels();
-                        modFolder.PakLocalization();
+                        Console.WriteLine($"Mod ID - {modFolder.ModId}");
+                        Console.WriteLine($"Input - {modFolder.InputDirectory}");
+                        Console.WriteLine($"Output - {modFolder.OutputDirectory}");
+
+                        await AnsiConsole
+                            .Progress()
+                            .Columns(
+                                new TaskDescriptionColumn() { Alignment = Justify.Left },
+                                new ProgressBarColumn(),
+                                new PercentageColumn(),
+                                new RemainingTimeColumn(),
+                                new SpinnerColumn()
+                            )
+                            .StartAsync(async ctx =>
+                            {
+                                var tasks = new List<Task>();
+
+                                foreach ((var pakFile, var entryFiles) in modFolder.GetTasks())
+                                {
+                                    var taskDescription = pakFile.Name;
+                                    var entries = entryFiles.ToList();
+
+                                    if (entries.Count == 0)
+                                        continue;
+
+                                    tasks.Add(PakFolder(ctx.AddTask(taskDescription, true, entries.Count), new RelativePath(modFolder.OutputDirectory, pakFile), pakFile, entries));
+                                }
+
+                                await Task.WhenAll(tasks);
+                            });
                     }
                 }
                 else if (recursive)
-                    ProcessFolders(Directory.GetDirectories(fullPath));
+                    await ProcessFolders(Directory.GetDirectories(fullPath));
             }
         }
     }
 
-    static void ProcessFolders(string[] paths)
+    static async Task ProcessFolders(string[] paths)
     {
         foreach (var path in paths)
-            ProcessFolder(path);
+            await ProcessFolder(path);
     }
 
     static bool TryGetFullPath(string path, out string fullPath)
