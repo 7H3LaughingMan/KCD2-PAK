@@ -1,7 +1,3 @@
-using System.Diagnostics.Metrics;
-using System.IO.Compression;
-using System.IO.Hashing;
-using System.Threading.Tasks;
 using KCD2.Mod;
 using KCD2.PAK;
 using Microsoft.Win32;
@@ -14,7 +10,7 @@ namespace KCD2;
 
 class Program
 {
-    private static readonly NuGet.Versioning.SemanticVersion CurrentVersion = new(2, 0, 0);
+    private static readonly NuGet.Versioning.SemanticVersion CurrentVersion = new(2, 1, 0);
 
     private static readonly VelopackLocator velopackLocator = VelopackLocator.GetDefault(null);
 
