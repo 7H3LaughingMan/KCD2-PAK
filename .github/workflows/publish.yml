@@ -45,5 +45,5 @@ jobs:
       - name: Create Velopack Release
         run: |
           dotnet vpk download github --repoUrl https://github.com/${{ github.repository }}
-          dotnet vpk pack --packId KCD2-PAK --packVersion ${{ steps.get-assembly-version.outputs.net-assembly-version }} --packDir bin\Publish --mainExe KCD2-PAK.exe --icon icon.ico --shortcuts None --azureTrustedSignFile azureTrustedSignFile.json --releaseNotes RELEASE.md --packAuthors 7H3LaughingMan --packTitle "KCD2 PAK"
-          dotnet vpk upload github --repoUrl https://github.com/${{ github.repository }} --token ${{ secrets.GITHUB_TOKEN }} --publish --releaseName "KCD2 PAK v${{ steps.get-assembly-version.outputs.net-assembly-version }}" --tag v${{ steps.get-assembly-version.outputs.net-assembly-version }}
+          dotnet vpk pack --packId KCD2-PAK --packVersion ${{ steps.get-assembly-version.outputs.net-version }} --packDir bin\Publish --mainExe KCD2-PAK.exe --icon icon.ico --shortcuts None --azureTrustedSignFile azureTrustedSignFile.json --releaseNotes RELEASE.md --packAuthors 7H3LaughingMan --packTitle "KCD2 PAK"
+          dotnet vpk upload github --repoUrl https://github.com/${{ github.repository }} --token ${{ secrets.GITHUB_TOKEN }} --publish --releaseName "KCD2 PAK v${{ steps.get-assembly-version.outputs.net-version }}" --tag v${{ steps.get-assembly-version.outputs.net-version }}
